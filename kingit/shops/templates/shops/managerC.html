@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block nav %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">Manager C</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Главная</a>
+                </li>
+                <li>
+                    <a href="{% url 'managerC_add' %}" class="nav-link">Добавить ТЦ</a>
+                </li>
+                <li>
+                    <a href="{% url 'managerC_pavilions' %}" class="nav-link">Павильоны</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="workspace">
+    <div class="sort">
+        <form action="{% url 'search_managerC' %}" method="get">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Фильтрация</legend>
+
+                <label for="{{ form.title.id_for_label }}">Название:</label>
+                <br>
+                {{ form.title }}
+                <div class="invalid-feedback">
+                    {{ form.title.errors }}
+                </div>
+
+                <label for="{{ form.status.id_for_label }}">Статус:</label>
+                <br>
+                {{ form.status }}
+                <div class="invalid-feedback">
+                    {{ form.status.errors }}
+                </div>
+                <p><input type="submit" name="sort" value="Сортировать"></p>
+            </fieldset>
+        </form>
+    </div>
+    <div class="all__tc">
+        {% for item in tc %}
+        <div class="tc__item">
+            <div class="item">
+                <a href="{{ item.get_absolute_url }}">
+                    <img src="{{ item.photo.url }}" alt="">
+                </a>
+            </div>
+            <div class="item">
+                Название: <span class="status__text">{{ item.title }}</span>
+            </div>
+            <div class="item">
+                Статус: <span class="status__text">{{ item.status }}</span>
+            </div>
+            <div class="item">
+                Павильонов: <span class="count__pavilion">{{ item.count_pavilions }}</span>
+            </div>
+            <div class="item">
+                Город: <span class="city">{{ item.city }}</span>
+            </div>
+            <div class="item">
+                Цена: <span class="cost">{{ item.cost }}</span>
+            </div>
+            <div class="item">
+                Этажи: <span class="storyes">{{ item.storyes }}</span>
+            </div>
+            <div class="item">
+                Кооф. Добавочной стоимости: <span class="rito">{{ item.add_value_rito }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

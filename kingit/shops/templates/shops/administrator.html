@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block nav %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">Admin</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'administrator' %}">Главная</a>
+                </li>
+                <li>
+                    <a href="{% url 'administrator_add' %}" class="nav-link">Добавить Сотрудника</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="workspace">
+    <div class="sort">
+        <form action="{% url 'administrator_search' %}" method="get">
+            <fieldset>
+                <legend>Филтрация</legend>
+                {% csrf_token %}
+
+                {{ form.non_field.errors }}
+
+                {{ form.as_p }}
+                 <p><input type="submit" name="sort" value="Сортировать"></p>
+            </fieldset>
+        </form>
+    </div>
+    <div class="all__tc">
+        {% for item in workers %}
+        <div class="tc__item">
+            <div class="item">
+                <a href="{{ item.get_absolute_url }}">
+                    <img src="{{ item.photo.url }}" alt="">
+                </a>
+            </div>
+            <div class="item">
+                ФИО: <span class="status__text">{{ item.full_name }}</span>
+            </div>
+            <div class="item">
+                Email: <span class="status__text">{{ item.email }}</span>
+            </div>
+            <div class="item">
+                Password: <span class="count__pavilion">{{ item.password }}</span>
+            </div>
+            <div class="item">
+                Роль: <span class="city">{{ item.role }}</span>
+            </div>
+            <div class="item">
+                Телефон: <span class="cost">{{ item.phone }}</span>
+            </div>
+            <div class="item">
+                Пол: <span class="storyes">{{ item.gender }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

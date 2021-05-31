@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block nav %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">Manager C</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home' %}">Главная</a>
+                </li>
+                <li>
+                    <a href="{% url 'managerC_add' %}" class="nav-link">Добавить ТЦ</a>
+                </li>
+                <li>
+                    <a href="{% url 'managerC_pavilions' %}" class="nav-link">Павильоны</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% endblock %}
+
+{% block content %}
+<div class="workspace">
+    <div class="sort">
+        <form action="{% url 'pavilions_search' %}" method="get">
+            {% csrf_token %}
+            <fieldset>
+                <legend>Фильтрация</legend>
+
+                {{ form.non_field.errors }}
+
+                {{ form.as_p }}
+                <p><input type="submit" name="sort" value="Сортировать"></p>
+            </fieldset>
+        </form>
+    </div>
+    <div class="all__tc">
+        {% for item in pavilions %}
+        <div class="tc__item">
+            <div class="item">
+                Название ТЦ: <span class="status__text">{{ item.title_TC }}</span>
+            </div>
+            <div class="item">
+                Номер павильона: <span class="status__text">{{ item.number_pavilion }}</span>
+            </div>
+            <div class="item">
+                Этаж: <span class="count__pavilion">{{ item.floor }}</span>
+            </div>
+            <div class="item">
+                Статус: <span class="cost">{{ item.status }}</span>
+            </div>
+            <div class="item">
+                Площадь: <span class="cost">{{ item.area }}</span>
+            </div>
+            <div class="item">
+                Стоимость кв/м: <span class="storyes">{{ item.cost_sqm }}</span>
+            </div>
+            <div class="item">
+                Кооф. Добавочной стоимости: <span class="rito">{{ item.add_value_rito }}</span>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
